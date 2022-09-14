@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Institutions</h1>
+
+<div id="institutions">
+  <% @institutions.each do |institution| %>
+    <%= render institution %>
+    <p>
+      <%= link_to "Show this institution", institution %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New institution", new_institution_path %>
