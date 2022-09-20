@@ -10,11 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_14_155231) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_20_141631) do
+  create_table "enrollments", force: :cascade do |t|
+    t.decimal "course_price"
+    t.integer "number_payments"
+    t.integer "due_day"
+    t.string "course_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "institution_id"
+    t.integer "student_id"
+    t.index ["institution_id"], name: "index_enrollments_on_institution_id"
+    t.index ["student_id"], name: "index_enrollments_on_student_id"
+  end
+
   create_table "institutions", force: :cascade do |t|
     t.string "name", null: false
     t.string "cnpj", null: false
-    t.string "type", null: false
+    t.string "institution_type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.decimal "value"
+    t.date "due_date"
+    t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
