@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_20_141631) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_20_155051) do
   create_table "enrollments", force: :cascade do |t|
     t.decimal "course_price"
     t.integer "number_payments"
@@ -35,7 +35,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_141631) do
   create_table "payments", force: :cascade do |t|
     t.decimal "value"
     t.date "due_date"
-    t.string "status"
+    t.string "status", default: "open"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
