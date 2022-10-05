@@ -33,3 +33,7 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+test/controllers/islands_controller_test.rb
+test/fixtures/islands.yml
+test/models/island_test.rb
+test/system/islands_test.rb
