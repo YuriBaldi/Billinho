@@ -1,5 +1,5 @@
 class Institution < ApplicationRecord
-    has_many :enrollments dependent :destroy
+    has_many :enrollments, dependent: :destroy
 
     validates_presence_of :name
     validates :name, uniqueness: {message: "Name is already in use"}
