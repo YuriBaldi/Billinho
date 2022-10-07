@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_27_164342) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_06_180048) do
   create_table "enrollments", force: :cascade do |t|
     t.decimal "course_price"
     t.integer "number_payments"
@@ -39,6 +39,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_27_164342) do
     t.string "status", default: "open"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "enrollments_id", null: false
+    t.index ["enrollments_id"], name: "index_payments_on_enrollments_id"
   end
 
   create_table "students", force: :cascade do |t|
@@ -52,4 +54,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_27_164342) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "payments", "enrollments", column: "enrollments_id"
 end
