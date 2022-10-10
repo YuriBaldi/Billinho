@@ -65,6 +65,10 @@ class PaymentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def payment_params
-      params.require(:payment).permit(:value, :due_date, :status)
+      params.require(:payment).permit(:value, :due_date, :status, :enrollment_id)
+    end
+
+    def prof
+      @enrollment = Enrollment.find(payment_params[:enrollment_id])
     end
 end

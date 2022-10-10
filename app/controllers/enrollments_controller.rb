@@ -67,4 +67,9 @@ class EnrollmentsController < ApplicationController
     def enrollment_params
       params.require(:enrollment).permit(:student_id, :institution_id, :course_price, :number_payments, :due_day, :course_name)
     end
+
+    def prof
+      @student = Student.find(enrollment_params[:student_id])
+      @institution = Institution.find(enrollment_params[:institution_id])
+    end
 end

@@ -33,14 +33,16 @@
 
   <div>
     <%= form.label :gender, style: "display: block" %>
-    <%= form.text_field :gender %>
+    <%= form.select :gender, [["Female", 'f'], ["Male", 'm']]%>
   </div>
-
+  
+  </br>
   <div>
     <%= form.label :payment_type, style: "display: block" %>
-    <%= form.text_field :payment_type %>
+    <%= form.select :payment_type, [["Card", "card"], ["Brazil Boleto", "boleto"]]%>
   </div>
-
+  
+  </br>
   <div>
     <%= form.submit %>
   </div>
