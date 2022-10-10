@@ -12,6 +12,11 @@
   <% end %>
 
   <div>
+    <%= form.label :enrollment_id, style: "display: block" %>
+    <%= collection_select(:payment, :enrollment_id, Enrollment.all, :id, :enrollment_info) %>
+  </div>
+
+  <div>
     <%= form.label :value, style: "display: block" %>
     <%= form.text_field :value %>
   </div>

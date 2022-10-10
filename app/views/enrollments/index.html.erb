@@ -3,12 +3,28 @@
 <h1>Enrollments</h1>
 
 <div id="enrollments">
-  <% @enrollments.each do |enrollment| %>
-    <%= render enrollment %>
-    <p>
-      <%= link_to "Show this enrollment", enrollment %>
-    </p>
-  <% end %>
+  <table class="table">
+    <tr>
+      <th>Student</th>
+      <th>Institution</th>
+      <th>Course name</th>
+      <th>Course price</th>
+      <th>Number payments</th>
+      <th>Due day</th>
+      <th>Actions</th>
+    </tr>
+    <% @enrollments.each do |enrollment| %>
+      <tr>
+        <td><%=enrollment.student.name %></td>
+        <td><%=enrollment.institution.name %></td>
+        <td><%=enrollment.course_name %></td>
+        <td><%=enrollment.course_price %></td>
+        <td><%=enrollment.number_payments %></td>
+        <td><%=enrollment.due_day %></td>
+        <td><%= link_to "Show", enrollment %> <%= button_to "Delete", enrollment, method: :delete %></td>
+      </tr>
+    <% end %>
+  </table>
 </div>
 
 <%= link_to "New enrollment", new_enrollment_path %>

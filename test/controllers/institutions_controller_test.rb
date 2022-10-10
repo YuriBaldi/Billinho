@@ -17,7 +17,7 @@ class InstitutionsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create institution" do
     assert_difference("Institution.count") do
-      post institutions_url, params: { institution: { cnpj: @institution.cnpj, name: @institution.name, type: @institution.type } }
+      post institutions_url, params: { institution: { cnpj: @institution.cnpj, name: @institution.name, institution_type: @institution.institution_type } }
     end
 
     assert_redirected_to institution_url(Institution.last)
@@ -34,7 +34,7 @@ class InstitutionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update institution" do
-    patch institution_url(@institution), params: { institution: { cnpj: @institution.cnpj, name: @institution.name, type: @institution.type } }
+    patch institution_url(@institution), params: { institution: { cnpj: @institution.cnpj, name: @institution.name, institution_type: @institution.institution_type } }
     assert_redirected_to institution_url(@institution)
   end
 

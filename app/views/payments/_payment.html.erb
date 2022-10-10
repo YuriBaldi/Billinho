@@ -1,5 +1,15 @@
 <div id="<%= dom_id payment %>">
   <p>
+  <strong>Student:</strong>
+  <%= payment.enrollment.student.name %>
+  </p>
+
+  <p>
+    <strong>Enrollment id:</strong>
+    <%= payment.enrollment_id %>
+  </p>
+
+  <p>
     <strong>Value:</strong>
     <%= payment.value %>
   </p>

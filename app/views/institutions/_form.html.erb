@@ -23,7 +23,7 @@
 
   <div>
     <%= form.label :institution_type, style: "display: block" %>
-    <%= form.text_field :institution_type %>
+    <%= form.select :institution_type, [["University", "university"], ["School", "scholl"], ["Nursey", "nursey"]]%>
   </div>
 
   <div>
