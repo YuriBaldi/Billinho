@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_10_152454) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_10_142457) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "enrollments", force: :cascade do |t|
     t.decimal "course_price"
     t.integer "number_payments"
@@ -38,7 +41,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_10_152454) do
     t.string "status", default: "open"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "enrollment_id", null: false
+    t.bigint "enrollment_id", null: false
     t.index ["enrollment_id"], name: "index_payments_on_enrollment_id"
   end
 
