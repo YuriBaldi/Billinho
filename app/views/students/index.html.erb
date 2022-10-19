@@ -3,12 +3,28 @@
 <h1>Students</h1>
 
 <div id="students">
-  <% @students.each do |student| %>
-    <%= render student %>
-    <p>
-      <%= link_to "Show this student", student %>
-    </p>
-  <% end %>
+  <table class="table">
+    <tr>
+      <th>Name</th>
+      <th>CPF</th>
+      <th>Birth date</th>
+      <th>Phone</th>
+      <th>Gender</th>
+      <th>Payment Type</th>
+      <th>Actions</th>
+    </tr>
+    <% @students.each do |student| %>
+      <tr>
+        <td><%=student.name %></td>
+        <td><%=student.cpf %></td>
+        <td><%=student.birth_date %></td>
+        <td><%=student.phone %></td>
+        <td><%=student.gender == "f" ? "Female" : "Male"  %></td>
+        <td><%=student.payment_type.capitalize %></td>
+        <td><%= link_to "Show", student %> <%= button_to "Delete", student, method: :delete %></td>
+      </tr>
+    <% end %>
+  </table>
 </div>
 
 <%= link_to "New student", new_student_path %>
