@@ -3,12 +3,22 @@
 <h1>Institutions</h1>
 
 <div id="institutions">
-  <% @institutions.each do |institution| %>
-    <%= render institution %>
-    <p>
-      <%= link_to "Show this institution", institution %>
-    </p>
-  <% end %>
+  <table class="table">
+    <tr>
+      <th>Name</th>
+      <th>CNPJ</th>
+      <th>Type</th>
+      <th>Actions</th>
+    </tr>
+    <% @institutions.each do |institution| %>
+      <tr>
+        <td><%=institution.name %></td>
+        <td><%=institution.cnpj %></td>
+        <td><%=institution.institution_type.capitalize %></td>
+        <td><%= link_to "Show", institution %> <%= button_to "Delete", institution, method: :delete %></td>
+      </tr>
+    <% end %>
+  </table>
 </div>
 
 <%= link_to "New institution", new_institution_path %>

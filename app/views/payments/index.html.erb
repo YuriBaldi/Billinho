@@ -3,12 +3,28 @@
 <h1>Payments</h1>
 
 <div id="payments">
-  <% @payments.each do |payment| %>
-    <%= render payment %>
-    <p>
-      <%= link_to "Show this payment", payment %>
-    </p>
-  <% end %>
+  <table class="table">
+    <tr>
+      <th>Student</th>
+      <th>Institution</th>
+      <th>Course name</th>
+      <th>Payment Value</th>
+      <th>Due date</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+    <% @payments.each do |payment| %>
+      <tr>
+        <td><%=payment.enrollment.student.name %></td>
+        <td><%=payment.enrollment.institution.name %></td>
+        <td><%=payment.enrollment.course_name %></td>
+        <td><%=payment.value %></td>
+        <td><%=payment.due_date %></td>
+        <td><%=payment.status %></td>
+        <td><%= link_to "Show", payment %> <%= button_to "Delete", payment, method: :delete %></td>
+      </tr>
+    <% end %>
+  </table>
 </div>
 
 <%= link_to "New payment", new_payment_path %>
