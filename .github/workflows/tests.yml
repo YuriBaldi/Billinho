@@ -9,7 +9,6 @@ jobs:
     env:
       DB_HOST: localhost
       DB_USER: postgres
-      DB_PASSWORD: postgres
       RAILS_ENV: test
 
     services:
