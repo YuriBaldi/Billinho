@@ -6,48 +6,19 @@ on:
     types:
       - synchronize
       - labeled
-
 jobs:
-  build:
-    name: CI
-    runs-on: ubuntu-latest
-    env:
-      api-dir: ./api 
+  test:
 
-    services:
-      postgres:
-        image: postgres:14.5
-        ports: ["5432:5432"]
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-ruby@v1
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@359bebbc29cbe6c87da6bc9ea3bc930432750108
         with:
-          ruby-version: 3.1.2
-
-      - name: Install PostgreSQL
-        run: sudo apt-get -yqq install libpq-dev
-
-      - name: Run bundle install
-        working-directory: ${{env.api-dir}}
-        run: |
-          gem install bundler
-          bundle install --jobs 4 --retry 3
-      - name: Setup Database
-        working-directory: ${{env.api-dir}}
-        env:
-          RAILS_ENV: test
-          DATABASE_HOSTNAME: "localhost"
-          DATABASE_USERNAME: "postgres"
-          DATABASE_PASSWORD: "postgres"
-        run: bin/rails db:create db:schema:load
-
-      - name: Build and test with rspec
-        working-directory: ${{env.api-dir}}
-        env:
-          RAILS_ENV: test
-          DATABASE_HOSTNAME: "localhost"
-          DATABASE_USERNAME: "postgres"
-          DATABASE_PASSWORD: "postgres"
+          ruby-version: '3.1.2'
+          bundler-cache: true
+      - name: Install dependencies
+        run: bundle install
+      - name: Run tests
         run: bundle exec rspec spec
