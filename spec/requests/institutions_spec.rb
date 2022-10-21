@@ -50,6 +50,18 @@ describe "Institution Requests", :type => :request do
             get "/institutions/new"
             expect(response).to_not render_template(:show)
         end
+
+        it "creates a Institution with invalid params and redirects to the Institution's new page" do
+            get "/institutions/new"
+            should render_template(:new)
+
+            post "/institutions", params: { institution: attributes_for(:institution, :invalid_params) }
+
+            should render_template(:new)
+            expect(response.body).to include("Cnpj CNPJ must be a number")
+            expect(response.body).to include("Institution type Institution type must be university, school or nursey")
+            expect(response).to have_http_status(422)
+        end
     end
 
     describe "PATCH /update" do
@@ -65,6 +77,20 @@ describe "Institution Requests", :type => :request do
             should render_template(:show)
             expect(response.body).to include("Institution was successfully updated.")
             expect(response).to have_http_status(200)
+        end
+
+        it "updates a Institution with invalid params and redirects to the Institution's page" do
+            institution = create(:institution)
+            new_params = build(:institution, :invalid_params)
+
+            patch institution_url(institution), params: { 
+                institution: attributes_for(:institution, :invalid_params) 
+            }
+
+            should render_template(:edit)
+            expect(response.body).to include("Cnpj CNPJ must be a number")
+            expect(response.body).to include("Institution type Institution type must be university, school or nursey")
+            expect(response).to have_http_status(422)
         end
     end
 
