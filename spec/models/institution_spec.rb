@@ -1,13 +1,24 @@
 require 'rails_helper'
 
 describe Institution, type: :model do
-    describe 'associations' do
-        subject { build(:institution) }
+
+    context 'db' do
+        context 'columns' do
+            it { should have_db_column(:name).of_type(:string).with_options(:null => false) }
+            it { should have_db_column(:cnpj).of_type(:string).with_options(:null => false) }
+            it { should have_db_column(:institution_type).of_type(:string).with_options(:null => false) }
+        end
+    end
+
+    before :all do
+        @institution = create(:institution)
+    end
+
+    context 'associations' do
         it { should have_many(:enrollments).dependent(:destroy) }
     end
 
-    describe 'validations' do
-        subject { build(:institution) }
+    context 'validations' do
         it { should validate_presence_of(:name) }
 
         it do

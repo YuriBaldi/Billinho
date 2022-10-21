@@ -1,9 +1,7 @@
-require 'rails_helper'
-
 FactoryBot.define do
     factory :institution do
-        name {'Institution Name'}
-        cnpj {'01657521000189'}
+        name {Faker::University.unique.name}
+        cnpj {Faker::Number.unique.number(digits: 14)}
         institution_type {'university'}
     end
 end
