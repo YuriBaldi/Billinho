@@ -3,7 +3,7 @@ class Enrollment < ApplicationRecord
     belongs_to :student
     has_many :payment, dependent: :delete_all
     validates_presence_of :course_name, :institution_id, :student_id, :course_price, :number_payments, :due_day
-    validates :course_price, numericality: { greater_than: 0, message: "Must be greater than." }
+    validates :course_price, numericality: { greater_than: 0, message: "must be greater than 0" }
     validates :number_payments, numericality: { in: 1..120 }
     validates :due_day, numericality: { in: 1..31 }
 
