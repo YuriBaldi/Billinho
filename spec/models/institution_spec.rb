@@ -2,6 +2,10 @@ require 'rails_helper'
 
 describe Institution, type: :model do
 
+    before :all do
+        @institution = create(:institution)
+    end
+
     context 'db' do
         context 'columns' do
             it { should have_db_column(:name).of_type(:string).with_options(:null => false) }
@@ -10,33 +14,19 @@ describe Institution, type: :model do
         end
     end
 
-    before :all do
-        @institution = create(:institution)
-    end
-
     context 'associations' do
         it { should have_many(:enrollments).dependent(:destroy) }
     end
 
     context 'validations' do
         it { should validate_presence_of(:name) }
-
+        it { should validate_uniqueness_of(:name).with_message('is already in use') }
+        it { should validate_uniqueness_of(:cnpj).case_insensitive.with_message('is already in use') }
+        it { should validate_numericality_of(:cnpj).only_integer.with_message('must be a number') }
         it do
-            should validate_uniqueness_of(:name).with_message('Name is already in use')
-        end
-
-        it do
-            should validate_uniqueness_of(:cnpj).case_insensitive.with_message('CNPJ is already in use')
-        end
-
-        it do
-            should validate_numericality_of(:cnpj).only_integer.with_message('CNPJ must be a number')
-        end
-
-        it do
-            should validate_inclusion_of(:institution_type).
-                in_array(%w(university school nursey)).
-                with_message('Institution type must be university, school or nursey')
+            should validate_inclusion_of(:institution_type)
+                .in_array(%w(university school nursey))
+                .with_message('must be university, school or nursey')
         end
     end
 end
