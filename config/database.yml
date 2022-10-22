@@ -7,13 +7,13 @@ default: &default
   timeout: 500
 development:
   <<: *default
-  database: billinho_db
+  database: billinho_db_dev
 test:
   <<: *default
-  database: billinho_db
+  database: billinho_db_test
 production:
   <<: *default
-  database: billinho_db
+  database: billinho_db_prod
 
 
 
