@@ -40,7 +40,6 @@ class Enrollment < ApplicationRecord
     end
 
     def update_payments
-        puts 'aaaaa'
         if previous_changes.key?("due_day")
             payments = Payment.where(enrollment_id: id, status: 'open').all
             payments.each do |payment|

@@ -35,11 +35,16 @@ class EnrollmentsController < ApplicationController
   # PATCH/PUT /enrollments/1 or /enrollments/1.json
   def update
     respond_to do |format|
-      if @enrollment.update(enrollment_params)
-        format.html { redirect_to enrollment_url(@enrollment), notice: 'Enrollment was successfully updated.' }
-        format.json { render :show, status: :ok, location: @enrollment }
+      if params.permitted?
+        if @enrollment.update!(enrollments_params_can_updated)
+          format.html { redirect_to enrollment_url(@enrollment), notice: 'Enrollment was successfully updated.' }
+          format.json { render :show, status: :ok, location: @enrollment }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @enrollment.errors, status: :unprocessable_entity }
+        end
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { redirect_to enrollment_url(@enrollment), notice: 'Updating Course Price or Number of Payments is not allowed.' }
         format.json { render json: @enrollment.errors, status: :unprocessable_entity }
       end
     end
@@ -66,6 +71,10 @@ class EnrollmentsController < ApplicationController
   def enrollment_params
     params.require(:enrollment)
           .permit(:student_id, :institution_id, :course_price, :number_payments, :due_day, :course_name)
+  end
+
+  def enrollments_params_can_updated
+    params.require(:enrollment).permit(:student_id, :institution_id, :due_day, :course_name)
   end
 
   def prof
