@@ -27,7 +27,7 @@ describe 'Institution Requests', type: :request do
     end
 
     describe 'PATCH /update' do
-        it "updates a Institution and redirects to the Institution's page" do
+        it "updates a Institution" do
             new_params = build(:institution)
 
             patch institution_url(@institution), params: { institution: {
@@ -42,7 +42,7 @@ describe 'Institution Requests', type: :request do
             expect(response).to have_http_status(200)
         end
 
-        it "updates a Institution with invalid params and redirects to the Institution's page" do
+        it "updates a Institution with invalid params" do
             patch institution_url(@institution), params: {
               institution: attributes_for(:institution, :invalid_params)
             }
@@ -91,7 +91,7 @@ describe 'Institution Requests', type: :request do
     end
 
     describe 'POST /create' do
-        it "creates a Institution and redirects to the Institution's page" do
+        it "creates a Institution" do
             get '/institutions/new'
             should render_template(:new)
 

@@ -32,7 +32,7 @@ describe 'Enrollment Requests', type: :request do
     end
 
     describe 'PATCH /update' do
-        it "updates a Enrollment and redirects to the Enrollment's page" do
+        it "updates a Enrollment" do
             new_params = build(:enrollment)
 
             patch enrollment_url(@enrollment), params: { enrollment: {
@@ -47,7 +47,7 @@ describe 'Enrollment Requests', type: :request do
             expect(response).to have_http_status(200)
         end
 
-        it "updates a Enrollment with invalid params and redirects to the Enrollment's page" do
+        it "updates a Enrollment with invalid params" do
             patch enrollment_url(@enrollment), params: {
               enrollment: attributes_for(:enrollment, :invalid_params)
             }
@@ -61,13 +61,16 @@ describe 'Enrollment Requests', type: :request do
     end
 
     describe 'DELETE /destroy' do
-        it "deletes a Enrollment and redirects to the Enrollment's page" do
+        it "deletes a Enrollment" do
             delete enrollment_url(@enrollment)
             expect(response).to redirect_to(enrollments_url)
             follow_redirect!
             should render_template(:index)
             expect(response.body).to include('Enrollment was successfully destroyed.')
             expect(response).to have_http_status(200)
+
+            payments = Payment.where(enrollment_id: @enrollment.id).all
+            expect(payments).to be_empty
         end
     end
 

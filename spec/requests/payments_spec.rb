@@ -33,7 +33,7 @@ describe 'Payment Requests', type: :request do
     end
 
     describe 'PATCH /update' do
-        it "updates a Payment and redirects to the Payment's page" do
+        it "updates a Payment" do
             new_params = build(:payment)
 
             patch payment_url(@payment), params: { payment: {
@@ -48,7 +48,7 @@ describe 'Payment Requests', type: :request do
             expect(response).to have_http_status(200)
         end
 
-        it "updates a Payment with invalid params and redirects to the Payment's page" do
+        it "updates a Payment with invalid params" do
             patch payment_url(@payment), params: {
               payment: attributes_for(:payment, :invalid_params)
             }
@@ -61,7 +61,7 @@ describe 'Payment Requests', type: :request do
     end
 
     describe 'DELETE /destroy' do
-        it "deletes a Payment and redirects to the Payment's page" do
+        it "deletes a Payment" do
             delete payment_url(@payment)
             expect(response).to redirect_to(payments_url)
             follow_redirect!
@@ -84,7 +84,7 @@ describe 'Payment Requests', type: :request do
     end
 
     describe 'POST /create' do
-        it "creates a Payment and redirects to the Payment's page" do
+        it "creates a Payment" do
             get '/payments/new'
             should render_template(:new)
 
