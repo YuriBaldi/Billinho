@@ -55,13 +55,26 @@ describe 'Institution Requests', type: :request do
     end
 
     describe 'DELETE /destroy' do
-        it "deletes a Institution and redirects to the Institution's page" do
+        it "deletes a Institution" do
+            student = create(:student)
+            enrollment1 = create(:enrollment, institution_id: @institution.id, student_id: student.id)
+            enrollment2 = create(:enrollment, institution_id: @institution.id, student_id: student.id)
+
             delete institution_url(@institution)
+
             expect(response).to redirect_to(institutions_url)
             follow_redirect!
             should render_template(:index)
             expect(response.body).to include('Institution was successfully destroyed.')
             expect(response).to have_http_status(200)
+
+            enrollments = Enrollment.where(institution_id: @institution.id).all
+            payments = []
+            enrollments.each do |enrollment|
+                payments += Payment.where(enrollment_id: enrollment.id).all
+            end
+            expect(enrollments).to be_empty
+            expect(payments).to be_empty
         end
     end
 
