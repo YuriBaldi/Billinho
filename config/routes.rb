@@ -4,8 +4,7 @@ Rails.application.routes.draw do
   resources :enrollments
   resources :students
   resources :institutions
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  #  Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
- 
-   root "home#index"
+  root 'home#index'
 end

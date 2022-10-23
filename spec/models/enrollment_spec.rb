@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Enrollment, type: :model do
-
     before :all do
         institution = create(:institution)
         student = create(:student)
@@ -36,8 +35,8 @@ describe Enrollment, type: :model do
         it { should validate_inclusion_of(:due_day).in_range(1..31).with_message('must be in 1..31') }
         it do
             should validate_numericality_of(:course_price)
-                .is_greater_than(0)
-                .with_message('must be greater than 0')
+              .is_greater_than(0)
+              .with_message('must be greater than 0')
         end
     end
 end
