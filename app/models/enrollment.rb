@@ -8,6 +8,7 @@ class Enrollment < ApplicationRecord
     validates :due_day, numericality: { in: 1..31 }
 
     after_create :create_payments
+    after_update :update_payments
 
     def enrollment_info
         "Enroll id: #{id} - #{student.name} - #{course_name}"
@@ -15,23 +16,37 @@ class Enrollment < ApplicationRecord
 
     def create_payments
         payment_value = course_price.to_f / number_payments
-        current_date = Date.today
-        payment_due_date = Date.new(current_date.year, current_date.mon, due_day)
-
-        payment_due_date = payment_due_date.next_month if due_day <= current_date.mday
+        payment_due_date = get_due_date(Date.today, due_day)
 
         (1..number_payments).each do
             Payment.create(payment_params(payment_value, payment_due_date, id))
             payment_due_date = payment_due_date.next_month
         end
     end
-
+    
     def payment_params(payment_value, payment_due_date, enroll_id)
         {
-          value: payment_value,
-          due_date: payment_due_date,
-          status: 'open',
-          enrollment_id: enroll_id
+            value: payment_value,
+            due_date: payment_due_date,
+            status: 'open',
+            enrollment_id: enroll_id
         }
+    end
+
+    def get_due_date(current_date, due_day)
+        payment_due_date = Date.new(current_date.year, current_date.mon, due_day)
+        payment_due_date.next_month if payment_due_date <= Date.today
+        payment_due_date
+    end
+
+    def update_payments
+        puts 'aaaaa'
+        if previous_changes.key?("due_day")
+            payments = Payment.where(enrollment_id: id, status: 'open').all
+            payments.each do |payment|
+                payment.due_date = get_due_date(payment.due_date, due_day)
+                payment.save
+            end
+        end
     end
 end
