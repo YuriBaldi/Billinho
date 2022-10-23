@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'home/index'
-  resources :payments
+  resources :payments, except: [:new]
   resources :enrollments
   resources :students
   resources :institutions
