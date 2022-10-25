@@ -1,5 +1,5 @@
 class InstitutionsController < ApplicationController
-  before_action :set_institution, only: %i[ show edit update destroy ]
+  before_action :set_institution, only: %i[show edit update destroy]
 
   # GET /institutions or /institutions.json
   def index
@@ -7,8 +7,7 @@ class InstitutionsController < ApplicationController
   end
 
   # GET /institutions/1 or /institutions/1.json
-  def show
-  end
+  def show; end
 
   # GET /institutions/new
   def new
@@ -16,8 +15,7 @@ class InstitutionsController < ApplicationController
   end
 
   # GET /institutions/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /institutions or /institutions.json
   def create
@@ -25,7 +23,7 @@ class InstitutionsController < ApplicationController
 
     respond_to do |format|
       if @institution.save
-        format.html { redirect_to institution_url(@institution), notice: "Institution was successfully created." }
+        format.html { redirect_to institution_url(@institution), notice: 'Institution was successfully created.' }
         format.json { render :show, status: :created, location: @institution }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +36,7 @@ class InstitutionsController < ApplicationController
   def update
     respond_to do |format|
       if @institution.update(institution_params)
-        format.html { redirect_to institution_url(@institution), notice: "Institution was successfully updated." }
+        format.html { redirect_to institution_url(@institution), notice: 'Institution was successfully updated.' }
         format.json { render :show, status: :ok, location: @institution }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,19 +50,20 @@ class InstitutionsController < ApplicationController
     @institution.destroy
 
     respond_to do |format|
-      format.html { redirect_to institutions_url, notice: "Institution was successfully destroyed." }
+      format.html { redirect_to institutions_url, notice: 'Institution was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_institution
-      @institution = Institution.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def institution_params
-      params.require(:institution).permit(:name, :cnpj, :institution_type)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_institution
+    @institution = Institution.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def institution_params
+    params.require(:institution).permit(:name, :cnpj, :institution_type)
+  end
 end
