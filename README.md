@@ -1,24 +1,7 @@
-# README
+# Billinho
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+1. Pull the project down from GitHub using `git clone`
+2. Change into the project directory using `cd Billinho`
+3. Install the gems using `bundle install`
+4. Create the database `rake db:create`
+5. Run the migrations `rake db:migrate`
