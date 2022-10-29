@@ -20,7 +20,7 @@ class Enrollment < ApplicationRecord
 
         (1..number_payments).each do
             Payment.create(payment_params(payment_value, payment_due_date, id))
-            payment_due_date = payment_due_date.next_month
+            payment_due_date = get_due_date(payment_due_date.next_month, due_day)
         end
     end
     
@@ -34,8 +34,12 @@ class Enrollment < ApplicationRecord
     end
 
     def get_due_date(current_date, due_day)
-        payment_due_date = Date.new(current_date.year, current_date.mon, due_day)
-        payment_due_date.next_month if payment_due_date <= Date.today
+        if Date.valid_date?(current_date.year, current_date.month, due_day)
+            payment_due_date = Date.new(current_date.year, current_date.mon, due_day)
+        else
+            payment_due_date = current_date.end_of_month
+        end
+        payment_due_date = get_due_date(payment_due_date.next_month, due_day) if payment_due_date <= Date.today
         payment_due_date
     end
 
