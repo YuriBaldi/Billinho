@@ -22,8 +22,8 @@
         <td><%=enrollment.number_payments %></td>
         <td><%=enrollment.due_day %></td>
         <td>
-          <%= link_to "Edit", edit_enrollment_path(enrollment) %> 
-          <%= button_to "Delete", enrollment, method: :delete %>
+          <%= button_to "Edit", edit_enrollment_path(enrollment), method: :get, class: 'btn btn-sm btn-info' %> 
+          <%= button_to "Delete", enrollment, method: :delete, class: 'btn btn-sm btn-danger'  %>
         </td>
       </tr>
     <% end %>

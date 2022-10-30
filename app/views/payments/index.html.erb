@@ -22,8 +22,8 @@
         <td><%=payment.due_date %></td>
         <td><%=payment.status %></td>
         <td>
-          <%= link_to "Edit", edit_payment_path(payment) %>
-          <%= button_to "Delete", payment, method: :delete %>
+          <%= button_to "Edit", edit_payment_path(payment), method: :get, class: 'btn btn-sm btn-info' %>
+          <%= button_to "Delete", payment, method: :delete, class: 'btn btn-sm btn-danger'  %>
         </td>
       </tr>
     <% end %>

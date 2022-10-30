@@ -22,8 +22,8 @@
         <td><%=student.gender == "f" ? "Female" : "Male"  %></td>
         <td><%=student.payment_type.capitalize %></td>
         <td>
-          <%= link_to "Edit", edit_student_path(student) %>
-          <%= button_to "Delete", student, method: :delete %>
+          <%= button_to "Edit", edit_student_path(student), method: :get, class: 'btn btn-sm btn-info' %>
+          <%= button_to "Delete", student, method: :delete, class: 'btn btn-sm btn-danger' %>
         </td>
       </tr>
     <% end %>
