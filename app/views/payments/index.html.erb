@@ -21,7 +21,10 @@
         <td><%=payment.value %></td>
         <td><%=payment.due_date %></td>
         <td><%=payment.status %></td>
-        <td><%= link_to "Show", payment %> <%= button_to "Delete", payment, method: :delete %></td>
+        <td>
+          <%= link_to "Edit", edit_payment_path(payment) %>
+          <%= button_to "Delete", payment, method: :delete %>
+        </td>
       </tr>
     <% end %>
   </table>

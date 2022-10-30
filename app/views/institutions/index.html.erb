@@ -15,7 +15,10 @@
         <td><%=institution.name %></td>
         <td><%=institution.cnpj %></td>
         <td><%=institution.institution_type.capitalize %></td>
-        <td><%= link_to "Show", institution %> <%= button_to "Delete", institution, method: :delete %></td>
+        <td>
+          <%= link_to "Edit", edit_institution_path(institution) %>
+          <%= button_to "Delete", institution, method: :delete %>
+        </td>
       </tr>
     <% end %>
   </table>
