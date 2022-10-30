@@ -31,37 +31,45 @@ describe 'Enrollment Requests', type: :request do
         end
     end
 
-    describe 'PATCH /update' do
-        it "updates a Enrollment" do
+    describe 'PUT /update' do
+        it 'updates a Enrollment' do
+            old_number_payments = @enrollment.number_payments
+            old_payment = Payment.where(enrollment_id: @enrollment.id).all
             new_params = build(:enrollment)
 
-            patch enrollment_url(@enrollment), params: { enrollment: {
-              course_name: new_params.course_name
+            put enrollment_url(@enrollment), params: { enrollment: {
+              due_day: new_params.due_day,
+              number_payments: new_params.number_payments
             } }
 
             @enrollment.reload
             should redirect_to(assigns(:enrollment))
             follow_redirect!
             should render_template(:show)
+            expect(@enrollment.due_day).to eql(new_params.due_day)
+            expect(@enrollment.number_payments).to eql(old_number_payments)
             expect(response.body).to include('Enrollment was successfully updated.')
             expect(response).to have_http_status(200)
+
+            payments = Payment.where(enrollment_id: @enrollment.id, status: 'open').all
+            old_payment.zip(payments).each do |old, actual|
+                expect(actual.due_date).to eql(@enrollment.get_due_date(old.due_date, @enrollment.due_day))
+            end
         end
 
-        it "updates a Enrollment with invalid params" do
-            patch enrollment_url(@enrollment), params: {
-              enrollment: attributes_for(:enrollment, :invalid_params)
+        it 'updates a Enrollment with invalid params' do
+            put enrollment_url(@enrollment), params: {
+              enrollment: attributes_for(:enrollment, :invalid_params_to_update)
             }
 
             should render_template(:edit)
-            expect(response.body).to include('Number payments must be in 1..120')
             expect(response.body).to include('Due day must be in 1..31')
-            expect(response.body).to include('Course price must be greater than 0')
             expect(response).to have_http_status(422)
         end
     end
 
     describe 'DELETE /destroy' do
-        it "deletes a Enrollment" do
+        it 'deletes a Enrollment' do
             delete enrollment_url(@enrollment)
             expect(response).to redirect_to(enrollments_url)
             follow_redirect!
@@ -78,10 +86,6 @@ describe 'Enrollment Requests', type: :request do
         it 'renders a successful response' do
             get new_enrollment_url
             expect(response).to be_successful
-        end
-
-        it 'does not render a different template' do
-            get '/enrollments/new'
             expect(response).to_not render_template(:show)
         end
     end
@@ -115,17 +119,13 @@ describe 'Enrollment Requests', type: :request do
             payments = Payment.where(enrollment_id: enroll.id).all
 
             expected_value = enroll.course_price / enroll.number_payments
-            expected_status = 'open'
-            current_date = Date.today
-            expected_due_date = Date.new(current_date.year, current_date.mon, enroll.due_day)
-
-            expected_due_date = expected_due_date.next_month if enroll.due_day <= current_date.mday
+            expected_due_date = enroll.get_due_date(Date.today, enroll.due_day)
 
             payments.each do |payment|
                 expect(payment.value).to be_within(0.001).of(expected_value)
-                expect(payment.status).to eql(expected_status)
+                expect(payment.status).to eql('open')
                 expect(payment.due_date).to eql(expected_due_date)
-                expected_due_date = expected_due_date.next_month
+                expected_due_date = enroll.get_due_date(expected_due_date.next_month, enroll.due_day)
             end
         end
 
@@ -142,10 +142,6 @@ describe 'Enrollment Requests', type: :request do
             should render_template(:new)
             expect(response.body).to include('Institution must exist')
             expect(response.body).to include('Student must exist')
-            expect(response.body).to include('Institution can&#39;t be blank')
-            expect(response.body).to include('Student can&#39;t be blank')
-            expect(response.body).to include('Course name can&#39;t be blank')
-            expect(response.body).to include('Number payments must be in 1..120')
             expect(response.body).to include('Due day must be in 1..31')
             expect(response.body).to include('Course price must be greater than 0')
             expect(response).to have_http_status(422)

@@ -37,6 +37,10 @@ FactoryBot.define do
             number_payments { Faker::Number.within(range: -100..-1) }
             due_day { Faker::Number.between(from: 32, to: 100) }
         end
+
+        trait :invalid_params_to_update do
+            due_day { Faker::Number.between(from: 32, to: 100) }
+        end
     end
 
     factory :payment do

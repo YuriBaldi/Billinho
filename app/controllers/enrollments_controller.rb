@@ -35,7 +35,7 @@ class EnrollmentsController < ApplicationController
   # PATCH/PUT /enrollments/1 or /enrollments/1.json
   def update
     respond_to do |format|
-      if @enrollment.update!(enrollments_params_can_updated)
+      if @enrollment.update(enrollments_params_can_updated)
         format.html { redirect_to enrollment_url(@enrollment), notice: 'Enrollment was successfully updated.' }
         format.json { render :show, status: :ok, location: @enrollment }
       else
