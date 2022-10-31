@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Students, type: :model do
+describe Student, type: :model do
     before :all do
         @student = create (:student)
     end
