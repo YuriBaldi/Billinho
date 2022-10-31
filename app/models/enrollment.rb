@@ -20,10 +20,10 @@ class Enrollment < ApplicationRecord
 
         (1..number_payments).each do
             Payment.create(payment_params(payment_value, payment_due_date, id))
-            payment_due_date = payment_due_date.next_month
+            payment_due_date = get_due_date(payment_due_date.next_month, due_day)
         end
     end
-    
+
     def payment_params(payment_value, payment_due_date, enroll_id)
         {
             value: payment_value,
@@ -34,18 +34,23 @@ class Enrollment < ApplicationRecord
     end
 
     def get_due_date(current_date, due_day)
-        payment_due_date = Date.new(current_date.year, current_date.mon, due_day)
-        payment_due_date.next_month if payment_due_date <= Date.today
+        payment_due_date = \
+          if Date.valid_date?(current_date.year, current_date.month, due_day)
+              Date.new(current_date.year, current_date.mon, due_day)
+          else
+              current_date.end_of_month
+          end
+        payment_due_date = get_due_date(payment_due_date.next_month, due_day) if payment_due_date <= Date.today
         payment_due_date
     end
 
     def update_payments
-        if previous_changes.key?("due_day")
-            payments = Payment.where(enrollment_id: id, status: 'open').all
-            payments.each do |payment|
-                payment.due_date = get_due_date(payment.due_date, due_day)
-                payment.save
-            end
+        return unless previous_changes.key?('due_day')
+
+        payments = Payment.where(enrollment_id: id, status: 'open').all
+        payments.each do |payment|
+            payment.due_date = get_due_date(payment.due_date, due_day)
+            payment.save
         end
     end
 end

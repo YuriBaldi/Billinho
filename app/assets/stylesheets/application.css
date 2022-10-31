@@ -13,3 +13,11 @@
  *= require_tree .
  *= require_self
  */
+ button {
+    display: block;
+    float: left;
+    font: normal 6px arial, sans-serif;
+    margin-right: 6px;
+    padding: 0px;
+    text-decoration: none;
+  }

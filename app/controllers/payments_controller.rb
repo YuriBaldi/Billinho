@@ -9,16 +9,12 @@ class PaymentsController < ApplicationController
   # GET /payments/1 or /payments/1.json
   def show; end
 
-  def new_automatic
-    @payment = Payment.new
-  end
-
   # GET /payments/1/edit
   def edit; end
 
   # POST /payments or /payments.json
   def create
-    @payment = Payment.new_automatic(payment_params)
+    @payment = Payment.new(payment_params)
 
     respond_to do |format|
       if @payment.save

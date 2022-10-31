@@ -21,7 +21,10 @@
         <td><%=enrollment.course_price %></td>
         <td><%=enrollment.number_payments %></td>
         <td><%=enrollment.due_day %></td>
-        <td><%= link_to "Show", enrollment %> <%= button_to "Delete", enrollment, method: :delete %></td>
+        <td>
+          <%= button_to "Edit", edit_enrollment_path(enrollment), method: :get, class: 'btn btn-sm btn-info' %> 
+          <%= button_to "Delete", enrollment, method: :delete, class: 'btn btn-sm btn-danger'  %>
+        </td>
       </tr>
     <% end %>
   </table>

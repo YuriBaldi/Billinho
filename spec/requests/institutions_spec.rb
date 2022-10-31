@@ -26,11 +26,11 @@ describe 'Institution Requests', type: :request do
         end
     end
 
-    describe 'PATCH /update' do
-        it "updates a Institution" do
+    describe 'PUT /update' do
+        it 'updates a Institution' do
             new_params = build(:institution)
 
-            patch institution_url(@institution), params: { institution: {
+            put institution_url(@institution), params: { institution: {
               name: new_params.name
             } }
 
@@ -38,11 +38,12 @@ describe 'Institution Requests', type: :request do
             should redirect_to(assigns(:institution))
             follow_redirect!
             should render_template(:show)
+            expect(@institution.name).to eql(new_params.name)
             expect(response.body).to include('Institution was successfully updated.')
             expect(response).to have_http_status(200)
         end
 
-        it "updates a Institution with invalid params" do
+        it 'updates a Institution with invalid params' do
             patch institution_url(@institution), params: {
               institution: attributes_for(:institution, :invalid_params)
             }
@@ -55,10 +56,10 @@ describe 'Institution Requests', type: :request do
     end
 
     describe 'DELETE /destroy' do
-        it "deletes a Institution" do
+        it 'deletes a Institution' do
             student = create(:student)
-            enrollment1 = create(:enrollment, institution_id: @institution.id, student_id: student.id)
-            enrollment2 = create(:enrollment, institution_id: @institution.id, student_id: student.id)
+            create(:enrollment, institution_id: @institution.id, student_id: student.id)
+            create(:enrollment, institution_id: @institution.id, student_id: student.id)
 
             delete institution_url(@institution)
 
@@ -82,16 +83,12 @@ describe 'Institution Requests', type: :request do
         it 'renders a successful response' do
             get new_institution_url
             expect(response).to be_successful
-        end
-
-        it 'does not render a different template' do
-            get '/institutions/new'
             expect(response).to_not render_template(:show)
         end
     end
 
     describe 'POST /create' do
-        it "creates a Institution" do
+        it 'creates a Institution' do
             get '/institutions/new'
             should render_template(:new)
 
@@ -104,7 +101,7 @@ describe 'Institution Requests', type: :request do
             expect(response).to have_http_status(200)
         end
 
-        it "creates a Institution with invalid params and redirects to the Institution's new page" do
+        it 'creates a Institution with invalid params' do
             get '/institutions/new'
             should render_template(:new)
 

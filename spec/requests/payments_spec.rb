@@ -32,11 +32,11 @@ describe 'Payment Requests', type: :request do
         end
     end
 
-    describe 'PATCH /update' do
-        it "updates a Payment" do
+    describe 'PUT /update' do
+        it 'updates a Payment' do
             new_params = build(:payment)
 
-            patch payment_url(@payment), params: { payment: {
+            put payment_url(@payment), params: { payment: {
               status: new_params.status
             } }
 
@@ -44,11 +44,12 @@ describe 'Payment Requests', type: :request do
             should redirect_to(assigns(:payment))
             follow_redirect!
             should render_template(:show)
+            expect(@payment.status).to eql(new_params.status)
             expect(response.body).to include('Payment was successfully updated.')
             expect(response).to have_http_status(200)
         end
 
-        it "updates a Payment with invalid params" do
+        it 'updates a Payment with invalid params' do
             patch payment_url(@payment), params: {
               payment: attributes_for(:payment, :invalid_params)
             }
@@ -61,7 +62,7 @@ describe 'Payment Requests', type: :request do
     end
 
     describe 'DELETE /destroy' do
-        it "deletes a Payment" do
+        it 'deletes a Payment' do
             delete payment_url(@payment)
             expect(response).to redirect_to(payments_url)
             follow_redirect!
@@ -73,21 +74,12 @@ describe 'Payment Requests', type: :request do
 
     describe 'GET /new' do
         it 'renders a successful response' do
-            get new_payment_url
-            expect(response).to be_successful
-        end
-
-        it 'does not render a different template' do
-            get '/payments/new'
-            expect(response).to_not render_template(:show)
+            expect { get :new }.to raise_error(URI::InvalidURIError)
         end
     end
 
     describe 'POST /create' do
-        it "creates a Payment" do
-            get '/payments/new'
-            should render_template(:new)
-
+        it 'creates a Payment' do
             post '/payments', params: { payment: attributes_for(:payment).merge({
                 enrollment_id: @enrollment.id
             }) }
@@ -99,10 +91,7 @@ describe 'Payment Requests', type: :request do
             expect(response).to have_http_status(200)
         end
 
-        it "creates a Payment with invalid params and redirects to the Payment's new page" do
-            get '/payments/new'
-            should render_template(:new)
-
+        it 'creates a Payment with invalid params' do
             post '/payments', params: { payment: attributes_for(:payment, :invalid_params).merge({
                 enrollment_id: nil,
                 due_date: nil
@@ -110,8 +99,6 @@ describe 'Payment Requests', type: :request do
 
             should render_template(:new)
             expect(response.body).to include('Enrollment must exist')
-            expect(response.body).to include('Enrollment can&#39;t be blank')
-            expect(response.body).to include('Due date can&#39;t be blank')
             expect(response.body).to include('Value is not a number')
             expect(response.body).to include('Status must be open, delayed or paid')
             expect(response).to have_http_status(422)
