@@ -22,13 +22,10 @@ describe Student, type: :model do
 
     context 'validations' do
         it { should validate_presence_of(:name) }
-        # it { should validate_uniqueness_of(:name).with_message('is already in use') }
-        it { should validate_uniqueness_of(:cpf).case_insensitive.with_message('is already in use') }
+        it { should validate_uniqueness_of(:name).with_message('is already in use') }
+        it { should validate_uniqueness_of(:cpf).case_insensitive.with_message('already exists!') }
         it { should validate_numericality_of(:cpf).only_integer.with_message('must be a number') }
-        it { should validate_presence_of(:birth_date) }
-        it { should validate_numericality_of(:birth_date).only_integer.with_message('must be a number') }
-        it { should validate_numericality_of(:phone).only_integer.with_message('must be a number') }
-        it { should validate_uniqueness_of(:phone).case_insensitive.with_message('is already in use') }
+
         it do
             should validate_inclusion_of(:gender)
               .in_array(%w[m f])
@@ -37,7 +34,7 @@ describe Student, type: :model do
 
         it do
             should validate_inclusion_of(:payment_type)
-              .in_array('%w[boleto card]')
+              .in_array(%w[boleto card])
               .with_message("must be 'boleto' or 'card'")
         end
     end
