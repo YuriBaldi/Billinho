@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe 'Student Requests', type: :request do
     before(:each) do
+        @institution = create(:institution)
         @student = create(:student)
     end
 
@@ -49,24 +50,24 @@ describe 'Student Requests', type: :request do
             }
 
             should render_template(:edit)
-            expect(response.body).to include('Cnpj must be a number')
-            expect(response.body).to include('student type must be university, school or nursey')
+            expect(response.body).to include('Cpf must be a number')
+            expect(response.body).to include('Gender must be &#39;f&#39; (female) or &#39;m&#39; (male)')
+            expect(response.body).to include('Payment type must be &#39;boleto&#39; or &#39;card&#39;')
             expect(response).to have_http_status(422)
         end
     end
 
     describe 'DELETE /destroy' do
         it 'deletes a student' do
-            student = create(:student)
-            create(:enrollment, student_id: @student.id, student_id: student.id)
-            create(:enrollment, student_id: @student.id, student_id: student.id)
+            create(:enrollment, student_id: @student.id, institution_id: @institution.id)
+            create(:enrollment, student_id: @student.id, institution_id: @institution.id)
 
             delete student_url(@student)
 
             expect(response).to redirect_to(students_url)
             follow_redirect!
             should render_template(:index)
-            expect(response.body).to include('student was successfully destroyed.')
+            expect(response.body).to include('Student was successfully destroyed.')
             expect(response).to have_http_status(200)
 
             enrollments = Enrollment.where(student_id: @student.id).all
@@ -97,7 +98,7 @@ describe 'Student Requests', type: :request do
             should redirect_to(assigns(:student))
             follow_redirect!
             should render_template(:show)
-            expect(response.body).to include('student was successfully created.')
+            expect(response.body).to include('Student was successfully created.')
             expect(response).to have_http_status(200)
         end
 
